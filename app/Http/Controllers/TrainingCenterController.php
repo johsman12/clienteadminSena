@@ -3,23 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class TrainingCenterController extends Controller
 {
     // Método privado para manejar llamadas HTTP repetitivas
-    private function fetchDataFromApi($url)
-    {
-        $response = Http::get($url);
-        return $response->json();
-    }
-
     public function index()   
     {
 
-        $url = env('URL_SERVER_API');
-
-        $trainingcenters = $this->fetchDataFromApi($url . '/trainingcenters');
+        $trainingcenters = $this->apiGet('/trainingcenters');
         
         return view('trainingcenters.index', compact('trainingcenters'));
     }
@@ -27,9 +18,7 @@ class TrainingCenterController extends Controller
     public function show($id)
     {
 
-        $url = env('URL_SERVER_API');
-
-        $center = $this->fetchDataFromApi($url . '/trainingcenters/' . $id);
+        $center = $this->apiGet('/trainingcenters/' . $id);
 
         return view('trainingcenters.show', compact('center'));
     }
@@ -41,33 +30,40 @@ class TrainingCenterController extends Controller
 
     public function store(Request $request)
     {
-        $url = env('URL_SERVER_API');
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'location' => ['required', 'string', 'max:255'],
+            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif', 'max:5120'],
+        ]);
 
-        Http::post($url . '/trainingcenters', $request->all());
+        $this->apiWriteMultipart('POST', '/trainingcenters', $request);
 
         return redirect()->route('trainingcenters.index');
     }
 
     public function edit($id)
     {
-        $url = env('URL_SERVER_API');
-        $trainingcenter = $this->fetchDataFromApi($url . '/trainingcenters/' . $id);
+        $trainingcenter = $this->apiGet('/trainingcenters/' . $id);
         return view('trainingcenters.edit', compact('trainingcenter'));
     }
 
     public function update(Request $request, $id)
     {
-        $url = env('URL_SERVER_API');
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'location' => ['required', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:5120'],
+        ]);
 
-        Http::put($url . '/trainingcenters/' . $id, $request->all());
+        $request->merge(['_method' => 'PUT']);
+        $this->apiWriteMultipart('POST', '/trainingcenters/' . $id, $request);
 
         return redirect()->route('trainingcenters.index');
     }
 
       public function destroy($id)
     {
-        $url = env('URL_SERVER_API');
-        Http::delete($url . '/trainingcenters/' . $id);
+        $this->apiWrite('DELETE', '/trainingcenters/' . $id);
         return redirect()->route('trainingcenters.index');
     }
 }

@@ -38,22 +38,27 @@
                                 <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-500">{{ $trainingcenter['id'] ?? '—' }}</td>
                                 <td class="px-6 py-4 text-sm font-semibold text-slate-900">{{ $trainingcenter['name'] ?? 'Sin nombre' }}</td>
                                 <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">{{ $trainingcenter['location'] ?? '—' }}</td>
-                                <td class="whitespace-nowrap px-6 py-4 text-sm flex items-center gap-3">
-                                    <a href="{{ route('trainingcenters.show', $trainingcenter['id']) }}" class="font-semibold text-emerald-700 no-underline transition hover:text-emerald-800">
-                                        Ver detalle
-                                    </a>
+                                <td class="px-6 py-4 text-sm">
+                                    <div class="flex items-center gap-3">
+                                        <!-- Botón Ver detalle -->
+                                        <a href="{{ route('trainingcenters.show', $trainingcenter['id']) }}" class="font-semibold text-emerald-700 no-underline transition hover:text-emerald-800">
+                                            Ver detalle
+                                        </a>
 
-                                    <a href="{{ route('trainingcenters.edit', $trainingcenter['id']) }}" class="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-700">
-                                        Editar
-                                    </a>
+                                        <!-- Botón Editar con estilo armónico -->
+                                        <a href="{{ route('trainingcenters.edit', $trainingcenter['id']) }}" class="inline-flex items-center rounded-lg bg-emerald-700 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-800">
+                                            Editar
+                                        </a>
 
-                                    <form action="{{ route('trainingcenters.destroy', $trainingcenter['id']) }}" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar este centro?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-red-700">
-                                            Borrar
-                                        </button>
-                                    </form>
+                                        <!-- Botón Borrar -->
+                                        <form action="{{ route('trainingcenters.destroy', $trainingcenter['id']) }}" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de eliminar este centro?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="inline-flex items-center rounded-lg bg-rose-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-rose-700">
+                                                Borrar
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-center align-items-center" style="min-height: 70vh; padding: 20px;">
     
-    <form action="{{ route('trainingcenter.update', $trainingcenter->id) }}" method="POST" class="form-container">
+    <form action="{{ route('trainingcenters.update', $trainingcenter['id']) }}" method="POST" enctype="multipart/form-data" class="form-container">
         @csrf
         @method('PUT')
         
@@ -11,12 +11,19 @@
         
         <label>
             Nombre:
-            <input type="text" name="name" value="{{ $center->name }}" required>
+            <input type="text" name="name" value="{{ $trainingcenter['name'] }}" required>
         </label>
         
         <label>
             Ubicación:
-            <input type="text" name="location" value="{{ $center->location }}" required>
+            <input type="text" name="location" value="{{ $trainingcenter['location'] }}" required>
+        </label>
+
+        <label>
+            Imagen:
+            <input type="file" name="image" accept="image/jpeg,image/png,image/gif">
+            <small>Opcional. JPG, PNG o GIF, máximo 5 MB.</small>
+            @error('image') <span class="text-danger">{{ $message }}</span> @enderror
         </label>
 
         <button type="submit" class="btn btn-submit" style="width: 100%;">Actualizar Centro</button>

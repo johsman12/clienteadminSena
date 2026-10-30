@@ -23,7 +23,7 @@
                 <td>{{ $area['id'] }}</td>
                 <td>{{ $area['name'] }}</td>
                 <td>
-                    <!-- Botones Edit y Delete con clases consistentes -->
+                    <a href="{{ route('areas.show', $area['id']) }}" class="btn btn-view">Ver detalle</a>
                     <a href="{{ route('areas.edit', $area['id']) }}" class="btn btn-edit">Editar</a>
                     
                     <form action="{{ route('areas.destroy', $area['id']) }}" method="POST" style="display:inline;">
@@ -52,6 +52,7 @@
     }
     .btn:hover { transform: scale(1.05); filter: brightness(110%); }
     .btn-new { background-color: #39A900; }
+    .btn-view { background-color: #17a2b8; }
     .btn-edit { background-color: #007bff; }
     .btn-delete { background-color: #dc3545; border: none; cursor: pointer; }
 </style>

@@ -3,23 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class AreaController extends Controller
 {
     // Método privado para manejar llamadas HTTP repetitivas
-    private function fetchDataFromApi($url)
-    {
-        $response = Http::get($url);
-        return $response->json();
-    }
-
     public function index()   
     {
 
-        $url = env('URL_SERVER_API');
-
-        $areas = $this->fetchDataFromApi($url . '/areas');
+        $areas = $this->apiGet('/areas');
         
         return view('areas.index', compact('areas'));
     }
@@ -27,11 +18,9 @@ class AreaController extends Controller
     public function show($id)
     {
 
-        $url = env('URL_SERVER_API');
+        $area = $this->apiGet('/areas/' . $id);
 
-        $areas = $this->fetchDataFromApi($url . '/areas/' . $id);
-
-        return view('areas.show', compact('areas'));
+        return view('areas.show', compact('area'));
     }
 
     public function create()
@@ -41,33 +30,27 @@ class AreaController extends Controller
 
     public function store(Request $request)
     {
-        $url = env('URL_SERVER_API');
-
-        Http::post($url . '/areas', $request->all());
+        $this->apiWrite('POST', '/areas', $request->all());
 
         return redirect()->route('areas.index');
     }
 
     public function edit($id)
     {
-        $url = env('URL_SERVER_API');
-        $area = $this->fetchDataFromApi($url . '/areas/' . $id);
+        $area = $this->apiGet('/areas/' . $id);
         return view('areas.edit', compact('area'));
     }
 
     public function update(Request $request, $id)
     {
-        $url = env('URL_SERVER_API');
-
-        Http::put($url . '/areas/' . $id, $request->all());
+        $this->apiWrite('PUT', '/areas/' . $id, $request->all());
 
         return redirect()->route('areas.index');
     }
 
       public function destroy($id)
     {
-        $url = env('URL_SERVER_API');
-        Http::delete($url . '/areas/' . $id);
+        $this->apiWrite('DELETE', '/areas/' . $id);
         return redirect()->route('areas.index');
     }
 }
